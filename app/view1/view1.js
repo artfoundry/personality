@@ -23,11 +23,6 @@ angular.module('personality.view1', ['ngRoute'])
 		"Inconceivable!",
 		"A dead parrot"
 	];
-	
-	function getCreativeAnswer() {
-		var pick = Math.floor(Math.random() * 10);
-		return creatives[pick];
-	};
 
 	$scope.images = 
 		[{
@@ -72,8 +67,8 @@ angular.module('personality.view1', ['ngRoute'])
 			'creative': getCreativeAnswer()
 		},{
 			'image': "silly-dog.jpg",
-			'genius': "A dog doing...something",
-			'boring': "A dog with sunglasses and a paper towel tube",
+			'genius': "A dog with sunglasses and a paper towel tube who knows what he's doing",
+			'boring': "A dog doing...something",
 			'creative': getCreativeAnswer()
 		},{
 			'image': "silly-sign.jpg",
@@ -83,21 +78,42 @@ angular.module('personality.view1', ['ngRoute'])
 		}
 	];
 
+
 	$scope.index = 0;
+
 	$scope.chooseImage = function(){
 		return $scope.images[$scope.index].image;
 	};
 
 	$scope.addResults = function(){
-		sharedResults.setResults($scope.choice);
-		$scope.choice = null;
+		sharedResults.setResults($scope.ansTypes.choice);
 		$scope.index += 1;
-		if ($scope.index < 10) 
-			$scope.imageShown = $scope.chooseImage();
+		if ($scope.index < 10)
+			initForm();
 		else
 			$location.path( "/view2" );
 	};
 
-	$scope.imageShown = $scope.chooseImage();
-	$scope.choice;
+	$scope.randomizeAnswers = function(){
+		var typeArr = ["genius", "boring", "creative"],
+			pick;
+		pick = typeArr.splice(Math.floor(Math.random() * 3), 1);
+		$scope.ansTypes.push(pick[0]);
+		pick = typeArr.splice(Math.floor(Math.random() * 2), 1);
+		$scope.ansTypes.push(pick[0]);
+		$scope.ansTypes.push(typeArr[0]);
+	};
+
+	function initForm() {
+		$scope.ansTypes = [];
+		$scope.randomizeAnswers();
+		$scope.imageShown = $scope.chooseImage();
+	};
+
+	function getCreativeAnswer() {
+		var pick = Math.floor(Math.random() * 10);
+		return creatives[pick];
+	};
+
+	initForm();
 });

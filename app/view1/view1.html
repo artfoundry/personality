@@ -1,12 +1,11 @@
-<div class="container">
+<div class="container" ng-controller="View1Ctrl as view1Ctrl">
 	<img src="images/{{imageShown}}">
 	<div>
 		<b>What is this?</b>
 		<form name="pers_form" ng-submit="pers_form.$valid && addResults()" novalidate>
 			<ul>
-				<li><input type="radio" ng-model="choice" value="genius" required name="genius"> {{images[index].genius}}</li>
-				<li><input type="radio" ng-model="choice" value="creative" required name="creative"> {{images[index].creative}}</li>
-				<li><input type="radio" ng-model="choice" value="boring" required name="boring"> {{images[index].boring}}</li>
+				<li ng-repeat="ansType in ansTypes"><input id="{{ansType}}" ng-model="ansTypes.choice" type="radio" value="{{ansType}}" required>
+				<label for="{{ansType}}">{{images[index][ansType]}}</label></li>
 				<li><input type="submit"></li>
 			</ul>
 		</form>
